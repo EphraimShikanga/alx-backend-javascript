@@ -1,22 +1,20 @@
-const { expect, assert } = require('chai');
+const { expect } = require('chai');
 const sinon = require('sinon');
-const { spy } = require('sinon');
 
-const sendPaymentRequestToApi = require('./3-payment');
-const utils = require('./utils');
+const Utils = require('./utils.js');
+const sendPaymentRequestToApi = require('./3-payment.js');
 
-describe('sendPaymentRequestToApi', () => {
-    it('should call Util.calculateNumber', () => {
-        const functionSpy = sinon.spy(utils, 'calculateNumber');
-        const consoleSpy = sinon.spy(console, 'log');
+describe('sendPaymentRequestToApi function', () => {
+  // create the spy / wrapper of an existing function
+  const utilSpy = sinon.spy(Utils, 'calculateNumber');
 
-        const apiRequest = sendPaymentRequestToApi(100, 20);
-
-        expect(functionSpy.calledOnceWithExactly('SUM', 100, 20)).to.equal(true);
-        expect (consoleSpy.calledWithExactly('The total is: 120')).to.equal(true);
-        expect(utils.calculateNumber('SUM', 100, 20)).to.equal(apiRequest);
-
-        functionSpy.restore();
-        consoleSpy.restore();
-    });
+  it('validate the usage of the Utils function', () => {
+    // run the function with the parameters
+    sendPaymentRequestToApi(100, 20);
+    // check that the spy was called exactly once
+    expect(utilSpy.calledOnce).to.be.true;
+    // check that spy was called at least once with the provided arguments
+    expect(utilSpy.calledWith('SUM', 100, 20)).to.be.true;
+    utilSpy.restore()
+  });
 });

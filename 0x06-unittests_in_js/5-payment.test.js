@@ -1,29 +1,29 @@
-const { expect, assert } = require('chai');
+const { expect } = require('chai');
 const sinon = require('sinon');
-const { spy } = require('sinon');
 
 const sendPaymentRequestToApi = require('./5-payment');
 
 describe('sendPaymentRequestToApi', () => {
-    let spy;
+  let consoleSpy;
 
-    beforeEach(() => { 
-        spy = sinon.spy(console, 'log');
-    });
+  beforeEach(() => {
+    // runs before each test in this block
+    consoleSpy = sinon.spy(console, 'log');
+  });
 
-    afterEach(() => { 
-        spy.restore();
-    })
+  afterEach(() => {
+    // runs after each test in this block
+    expect(consoleSpy.calledOnce).to.be.true;
+    consoleSpy.restore();
+  });
 
-    it('should log correct output of calculateNumber(100, 20)', () => {
-        sendPaymentRequestToApi(100, 20);
-        expect(spy.calledOnceWithExactly('The total is: 120')).to.be.true;
-        expect(spy.calledOnce).to.be.true;
-    });
+  it('checks output of sendPaymentRequestToApi with 100 and 20 as args', () => {
+    sendPaymentRequestToApi(100, 20);
+    expect(consoleSpy.calledWith('The total is: 120')).to.be.true;
+  });
 
-    it('should log correct output of calculateNumber(10, 10)', () => {
-        sendPaymentRequestToApi(10, 10);
-        expect(spy.calledOnceWithExactly('The total is: 20')).to.be.true;
-        expect(spy.calledOnce).to.be.true;
-    });
+  it('checks output of sendPaymentRequestToApi with 10 and 10 as args', () => {
+    sendPaymentRequestToApi(10, 10);
+    expect(consoleSpy.calledWith('The total is: 20')).to.be.true;
+  });
 });
